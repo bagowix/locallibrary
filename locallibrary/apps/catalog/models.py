@@ -16,6 +16,7 @@ class Genre(models.Model):
     def __str__(self):
         return self.name
 
+
 class Language(models.Model):
     name = models.CharField(
         max_length=200,
@@ -61,7 +62,7 @@ class Book(models.Model):
     def display_genre(self):
         return ', '.join([genre.name for genre in self.genre.all()[:3]])
 
-    display_genre().short_description = 'Genre'
+    display_genre.short_description = 'Genre'
 
     def __str__(self):
         return self.title
@@ -78,8 +79,8 @@ class BookInstance(models.Model):
     )
     book = models.ForeignKey(
         'Book',
-         on_delete=models.SET_NULL,
-         null=True
+        on_delete=models.SET_NULL,
+        null=True
     )
     imprint = models.DateField(
         null=True,
@@ -121,9 +122,8 @@ class BookInstance(models.Model):
         ordering = ['due_back']
         permissions = (("can_mark_returned", "Set book as returned"),)
 
-
     def __str__(self):
-        return f'{self.id} ({self.book.title})'
+        return f'{self.book.title}, {self.status}, {self.due_back}, {self.id}'
 
 
 class Author(models.Model):
@@ -138,6 +138,11 @@ class Author(models.Model):
         null=True,
         blank=True
     )
+    # authors_books = models.ForeignKey(
+    #     'Book',
+    #     on_delete=models.SET_NULL,
+    #     null=True
+    # )
 
     class Meta:
         ordering = ['last_name', 'first_name']
